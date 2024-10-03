@@ -1,0 +1,38 @@
+pip install Flask Flask-JWT-Extended Flask-Bcrypt pymongo dnspython
+pip install flask-cors
+
+To show following dependency:
+pip freeze > requirements.txt
+ to run :
+ flask run
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ I'm glad it's working for you! Let's break down the logic behind the changes step-by-step:
+
+1. State Initialization
+const [isAuthenticated, setIsAuthenticated] = useState(null);:
+We initialize the isAuthenticated state to null. This serves a dual purpose:
+Indicates Loading: It indicates that the authentication status is currently being determined. Using null is a common practice to signify a loading state.
+Helps Avoid Premature Navigation: If it were initialized to false, the app would redirect to the login page immediately upon mounting, even before checking if a token exists.
+2. Token Check with useEffect
+useEffect(() => { ... }, []);:
+This effect runs only once when the component mounts. Inside it, we check for a token in localStorage:
+If a Token Exists: We set isAuthenticated to true, indicating that the user is logged in.
+If No Token Exists: We set isAuthenticated to false, meaning the user is not logged in.
+This asynchronous check prevents the app from redirecting users prematurely.
+3. Conditional Rendering
+if (isAuthenticated === null):
+While the app is checking the token, we display a loading indicator. This prevents any redirection or rendering of the routes until we have determined the user's authentication status.
+Routes Based on Authentication:
+Once the check is complete (i.e., isAuthenticated is no longer null), we conditionally render the routes:
+If isAuthenticated is true, we render the Dashboard.
+If isAuthenticated is false, we redirect to the login page using the <Navigate> component.
+4. User Flow After Login
+When a user logs in and the token is successfully stored in localStorage, the setIsAuthenticated function is called to update the state to true. This triggers a re-render, allowing access to the Dashboard.
+Summary of the Logic
+Loading State: We start with a null state to avoid rendering decisions before we know the user's authentication status.
+Token Validation: Using useEffect, we check if a token exists to determine if the user is logged in.
+Conditional Navigation: Based on the isAuthenticated state, we either show the Dashboard or redirect to the login page, ensuring that the user can only access protected routes when authenticated.
+This approach helps manage user authentication effectively and ensures that the app behaves correctly even after page refreshes.
