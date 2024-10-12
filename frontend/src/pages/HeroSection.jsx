@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 const HeroSection = () => {
   return (
-    <section className="flex min-h-screen flex-wrap items-center">
+    <section className="flex min-h-screen flex-wrap items-center mt-4">
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start p-4">
         <motion.h2
           className="my-8 p-2 text-4xl font-bold md:text-5xl lg:text-[7rem]"

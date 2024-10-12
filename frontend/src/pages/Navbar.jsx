@@ -3,8 +3,10 @@ import React, { useState } from "react";
 import logo from "../assets/bat.png";
 import { NAVIGATION_LINKS } from "../pages/constants";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -29,10 +31,17 @@ const Navbar = () => {
     }
   };
 
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
-    <div className="">
-      <nav className="fixed left-0 right-0 top-4 z-50">
+    <div className="relative">
+      <nav className="fixed left-0 right-0 top-4 z-50 ">
         {/* Desktop Menu */}
+
         <div className="mx-auto hidden max-w-2xl items-center justify-center rounded-lg border border-stone-50/30 bg-black/20 py-3 backdrop-blur-lg lg:flex">
           <div className="flex justify-between items-center gap-6">
             <div className="">
@@ -58,6 +67,15 @@ const Navbar = () => {
                     </a>
                   </li>
                 ))}
+                <button
+                  className=" 
+         
+          rounded-lg  hover:bg-red-950 transition-all duration-100 p-1 z-50"
+                  onClick={handleLogout}
+                >
+                  {" "}
+                  Logout
+                </button>
               </ul>
             </div>
           </div>
@@ -90,6 +108,15 @@ const Navbar = () => {
                   </a>
                 </li>
               ))}
+              <button
+                className=" 
+         
+          rounded-lg p-3   hover:bg-green-700 transition-all duration-100 ease-in-out"
+                onClick={handleLogout}
+              >
+                {" "}
+                Logout
+              </button>
             </ul>
           )}
         </div>
