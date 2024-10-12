@@ -20,6 +20,9 @@ const Login = ({ setIsAuthenticated }) => {
     );
 
     const data = await response.json();
+    if (!email || !password) {
+      alert("Invalid email or password");
+    }
     if (response.status === 200) {
       localStorage.setItem("token", data.access_token); // Save the token
       setIsAuthenticated(true); // Set authentication state

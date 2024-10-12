@@ -54,6 +54,8 @@ def login():
     password = data.get("password")
 
     user = users_collection.find_one({"email": email})
+    if(not user):
+        return jsonify({"message": "user does not exist"})
 
     if user and bcrypt.check_password_hash(user["password"], password):
         access_token = create_access_token(identity=str(user["_id"]))
