@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useContext } from "react";
 import { HERO } from "./constants/index";
 import amitPic from "../assets/dev.png";
 import { motion } from "framer-motion";

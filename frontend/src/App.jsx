@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import Register from "./components/Register";
 import Login from "./components/Login";
-import Dashboard from "./components/Dashboard";
 import HeroSection from "./pages/HeroSection";
 import Navbar from "./pages/Navbar";
 import Bio from "./pages/Bio";
@@ -17,56 +16,57 @@ import Projects from "./pages/Projects";
 import Skills from "./pages/Skills";
 import WorkExperience from "./pages/WorkExperience";
 import Education from "./pages/Education";
+import { AuthProvider, AuthContext } from "./context/AuthContext"; // Import AuthContext here
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null); // Set null initially to indicate "checking" state
+  const [loading, setLoading] = useState(true);
 
-  // Check token on component mount
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      setIsAuthenticated(true); // Token exists, set as authenticated
-    } else {
-      setIsAuthenticated(false); // No token, user is not authenticated
-    }
+    setLoading(false); // No need to wait for an API call for token existence in this example
   }, []);
 
-  // Only render routes when the token check is complete
-  if (isAuthenticated === null) {
-    return <div>Loading...</div>; // Optionally show a loading indicator while checking authentication
+  // While checking authentication, show a loading indicator
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
   return (
     <Router>
-      <div>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route
-            path="/login"
-            element={<Login setIsAuthenticated={setIsAuthenticated} />}
-          />
-          {isAuthenticated ? (
+      <AuthProvider>
+        <div>
+          <Routes>
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+
+            {/* Conditional rendering based on authentication status */}
             <Route
               path="/"
               element={
-                <>
-                  <HeroSection />
-                  <Projects />
-                  <Navbar />
-                  <Bio />
-                  <Skills />
-                  <WorkExperience />
-                  <Education />
-                  <Contact />
-                  <Footer />
-                </>
+                <AuthContext.Consumer>
+                  {({ isAuthenticated }) =>
+                    isAuthenticated ? (
+                      <>
+                        <HeroSection />
+                        <Projects />
+                        <Navbar />
+                        <Bio />
+                        <Skills />
+                        <WorkExperience />
+                        <Education />
+                        <Contact />
+                        <Footer />
+                      </>
+                    ) : (
+                      <Navigate to="/login" />
+                    )
+                  }
+                </AuthContext.Consumer>
               }
             />
-          ) : (
-            <Route path="/" element={<Navigate to="/login" />} />
-          )}
-        </Routes>
-      </div>
+          </Routes>
+        </div>
+      </AuthProvider>
     </Router>
   );
 };
