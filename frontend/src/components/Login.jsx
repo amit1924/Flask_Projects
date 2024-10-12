@@ -8,13 +8,16 @@ const Login = ({ setIsAuthenticated }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://127.0.0.1:5000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    const response = await fetch(
+      "https://flask-portfolio-app-gsx7.onrender.com/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      }
+    );
 
     const data = await response.json();
     if (response.status === 200) {
