@@ -6,9 +6,11 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const response = await fetch(
       "https://flask-portfolio-app-gsx7.onrender.com/register",
       {
@@ -21,6 +23,7 @@ const Register = () => {
     );
 
     const data = await response.json();
+    setLoading(false);
     if (response.status === 201) {
       alert("Registration successful! Please log in.");
       navigate("/login");
@@ -68,7 +71,7 @@ const Register = () => {
             type="submit"
             className="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-500 transition duration-200"
           >
-            Register
+            {loading ? "Registering user..." : "Register"}
           </button>
         </form>
         <p className="mt-4 text-center">
